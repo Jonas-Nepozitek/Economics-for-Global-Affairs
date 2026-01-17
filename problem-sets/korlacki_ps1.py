@@ -27,11 +27,56 @@ print(f"The percentiles of the growth rates are:\n\t10th: {np.nanpercentile(g,10
 
 # Part 3
 largestctr = df['code'][np.argmax(g)]
+df['growthrate'] = g
+sorted_df = df.sort_values(by='growthrate')
 
-print(largestctr)
+smallest3 = sorted_df[0:2]
+largest3 = sorted_df[np.argmax(sorted_df['growthrate'])-2:np.argmax(sorted_df['growthrate'])+1]
 
+# Part 4
+log60 = np.log(gdp60)
+df['log1960'] = log60
+plt.figure()
+plt.scatter(log60,g)
+plt.xlabel("log(GDPPC 1960)")
+plt.ylabel("Growth Rate")
 
+# Part 5
+for reg in df['region'].unique():
+    plt.figure()
+    plt.scatter(df['log1960'][df['region']==reg],df['growthrate'][df['region']==reg])
+    plt.xlabel("log(GDPPC 1960)")
+    plt.ylabel("Growth Rate")
+    plt.title(reg)
+    
 
+# Part 6
+edu25 = np.nanpercentile(df['edu1960'],25)
+edu50 = np.nanpercentile(df['edu1960'],50)
+edu75 = np.nanpercentile(df['edu1960'],75)
 
+plt.figure()
+plt.scatter(df['log1960'][df['edu1960']<=edu25],df['growthrate'][df['edu1960']<=edu25])
+plt.xlabel("log (GDPPC 1960)")
+plt.ylabel("Growth Rate")
+plt.title("Bottom Quartile")
+
+plt.figure()
+plt.scatter(df['log1960'][(edu25<= df['edu1960']) & (df['edu1960']<=edu50)],df['growthrate'][(edu25<= df['edu1960']) & (df['edu1960']<=edu50)])
+plt.xlabel("log (GDPPC 1960)")
+plt.ylabel("Growth Rate")
+plt.title("Lower Middle Quartile")
+
+plt.figure()
+plt.scatter(df['log1960'][(edu50<= df['edu1960']) & (df['edu1960']<=edu75)],df['growthrate'][(edu50<= df['edu1960']) & (df['edu1960']<=edu75)])
+plt.xlabel("log (GDPPC 1960)")
+plt.ylabel("Growth Rate")
+plt.title("Upper Middle Quartile")
+
+plt.figure()
+plt.scatter(df['log1960'][edu75<= df['edu1960']],df['growthrate'][edu75<= df['edu1960']])
+plt.xlabel("log (GDPPC 1960)")
+plt.ylabel("Growth Rate")
+plt.title("Upper Quartile")
 
 plt.show()
