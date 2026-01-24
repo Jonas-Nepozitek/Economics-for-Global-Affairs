@@ -31,15 +31,14 @@ lnA18 = np.log(A18)
 # 1B
 n = 58.0
 g = np.log(y18/y60)/n
-
 x = lny60
 x = sm.add_constant(x)
 y = g
 model1 = sm.OLS(y,x,missing='drop')
 res1 = model1.fit(cov_type="HC0")
 print(res1.summary(xname=['const','gdppc1960']))
-# 1C
 
+# 1C
 print(f"The mean of ln A in 1960 is: {np.mean(lnA60)}\nThe standard deviation of ln A in 1960 is: {np.std(lnA60)}")
 
 # 1D
@@ -49,22 +48,17 @@ y1 = lny60
 mod2 = sm.OLS(y1,x1,missing='drop')
 res2 = mod2.fit(cov_type="HC0")
 print(res2.summary(xname=['const','ln A']))
-
-
 plt.figure()
 sns.regplot(x='lnA', y='lny', data=pd.DataFrame({'lnA' : lnA60, 'lny' : lny60}) ) 
 plt.show()
 
-
 # 1E
 USAind = df.index[df['countrycode'] == 'USA']
-
-tfpUSA18 = A18[USAind]
+tfpUSA18 = A18[USAind].values[0]
 
 # 1F
 hypoy18 = (k18**a)*tfpUSA18
 hypog = np.log(hypoy18/y60)/n
-
 x3 = lny60
 x3 = sm.add_constant(x3)
 y3 = hypog
