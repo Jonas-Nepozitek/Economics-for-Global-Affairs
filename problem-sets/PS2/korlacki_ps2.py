@@ -31,6 +31,7 @@ lnA18 = np.log(A18)
 
 print(f"The mean of ln A in 1960 is: {np.mean(lnA60)}\nThe standard deviation of ln A in 1960 is: {np.std(lnA60)}")
 
+plt.figure()
 
 '''
 
